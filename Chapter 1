@@ -1,0 +1,28 @@
+Question: 
+Consider a mathematical model of the form
+G(m)=d,
+where m is a vector of length n, and d is a vector of length m. Suppose that the model obeys the superposition and scaling laws and is thus linear. Show that G(m) can be written in the form
+G(m)=Γm 
+where Γ is an m×n matrix. What are the elements of Γ?
+Solution:
+import numpy as np
+A_true = np.array([[2, -1, 0],
+                   [1,  3, 4]])  # shape (m=2, n=3)
+def G(m):
+    return A_true @ m
+
+m, n = A_true.shape
+basis = np.eye(n)
+Gamma = np.column_stack([G(basis[:, j]) for j in range(n)])
+print("True A:")
+print(A_true)
+print("\nConstructed Γ (from definition using basis vectors):")
+print(Gamma)
+m_vec = np.array([1.0, -2.0, 0.5])
+lhs = G(m_vec)
+rhs = Gamma @ m_vec
+
+print("\nCheck G(m) vs Γ m:")
+print("G(m)   =", lhs)
+print("Γ m    =", rhs)
+print("Are they equal?", np.allclose(lhs, rhs))
